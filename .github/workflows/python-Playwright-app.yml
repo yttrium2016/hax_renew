@@ -27,6 +27,7 @@ jobs:
     - name: Playwright install
       run: |
         python -m playwright install
+        pip install --upgrade cf_clearance
     - name: main run
       run: |
         python demo.py
