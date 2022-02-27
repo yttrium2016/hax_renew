@@ -20,7 +20,7 @@ UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
 HEADLESS = os.environ.get("HEADLESS", "True")
 headless = True if HEADLESS.lower() == "true" else False
-logging.basicConfig(level = logging.INFO) # format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+logging.basicConfig(level = logging.INFO,format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s') # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
 
 async def saveCookies(context):
 # 保存状态
@@ -82,14 +82,14 @@ async def login(page: Page) -> None:
 async def renew(page: Page) -> None:
     # Go to https://hax.co.id/vps-renew
     await page.goto("https://hax.co.id/vps-renew",timeout=100000)
-    # res = await async_cf_retry(page)  # 过 cloudflare waf
-    # if res == True:
-    #     logging.info(f"cf passed success")
-    # else: 
-    #     logging.error(f"cf passed {res}")
-    #     print(page.inner_html)
-    #     logging.error("JUMP OUT")
-    #     return
+    res = await async_cf_retry(page)  # 过 cloudflare waf
+    if res == True:
+        logging.info(f"cf passed success")
+    else: 
+        logging.error(f"cf passed {res}")
+        print(page.inner_html)
+        logging.error("JUMP OUT")
+        return
 
     # Click [input[name=\"web_address\"]]
     web_address = page.locator("input[name=\"web_address\"]")
