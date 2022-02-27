@@ -18,7 +18,7 @@ PASSWORD = os.environ.get("PASSWORD", "PASSWORD")
 DRIVER = os.environ.get("DRIVER", "/usr/bin/chromedriver")
 UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
-HEADLESS = os.environ.get("HEADLESS", "True")
+HEADLESS = os.environ.get("HEADLESS", "False")
 headless = True if HEADLESS.lower() == "true" else False
 logging.basicConfig(level = logging.INFO,format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s') # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
 

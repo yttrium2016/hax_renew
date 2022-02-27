@@ -24,13 +24,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Playwright install
+        pip install --upgrade cf_clearance
+    - name: Playwright && fake desktop install
       run: |
         python -m playwright install
-        pip install --upgrade cf_clearance
+        sudo apt install xvfb
+
     - name: main run
       run: |
-        python demo.py
+        xvfb-run python3 demo.py
       env:
         TRUECAPTCHA_USERID: ${{ secrets.TRUECAPTCHA_USERID }}
         TRUECAPTCHA_APIKEY: ${{ secrets.TRUECAPTCHA_APIKEY }}
