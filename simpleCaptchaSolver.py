@@ -9,18 +9,21 @@ from tencentcloud.common.profile.client_profile import ClientProfile
 from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.asr.v20190614 import asr_client, models
-logging.basicConfig(level = logging.INFO,format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s') # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
+# format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
+logging.basicConfig(level=logging.INFO,
+                    format='%(name)s-[%(levelname)s] %(asctime)s - %(message)s')
+
 
 class simpleSolver():
     '''解析简单的图片验证码'''
 
-    def __init__(self, TRUECAPTCHA_USERID:str, TRUECAPTCHA_APIKEY:str, timeout=15) -> None:
+    def __init__(self, TRUECAPTCHA_USERID: str, TRUECAPTCHA_APIKEY: str, timeout=15) -> None:
         '''
         传入 TRUECAPTCHA 的 键钥对
         '''
         self.TRUECAPTCHA_USERID, self.TRUECAPTCHA_APIKEY, self.timeout = TRUECAPTCHA_USERID, TRUECAPTCHA_APIKEY, timeout
 
-    def solve(self, f:str) -> dict:  # f是png文件名字，你需要保存验证码为本地图片再进行此操作
+    def solve(self, f: str) -> dict:  # f是png文件名字，你需要保存验证码为本地图片再进行此操作
         '''上传本地图片文件,返回 json 数据'''
         with open(f, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
@@ -41,8 +44,10 @@ class simpleSolver():
         if "result" in solved:
             solved_text = solved["result"]
             if "RESULT  IS" in solved_text:
-                logging.warning("[Captcha Solver] You are using the demo apikey.")
-                logging.warning("There is no guarantee that demo apikey will work in the future!")
+                logging.warning(
+                    "[Captcha Solver] You are using the demo apikey.")
+                logging.warning(
+                    "There is no guarantee that demo apikey will work in the future!")
                 # because using demo apikey
                 text = re.findall(r"RESULT  IS . (.*) .", solved_text)[0]
             else:
@@ -89,18 +94,18 @@ class simpleSolver():
 class reCapthaSolver():
     '''reCaptha V3 解析 -- 原配合 selenium 使用'''
 
-    def __init__(self, SECRETID:str, SECRETKEY:str, driver, timeout=15):
+    def __init__(self, SECRETID: str, SECRETKEY: str, driver, timeout=15):
         '''使用腾讯云的免费语音识别, 传入腾讯云账户的 SECRETID, SECRETKEY 和 selenium 的 driver 对象'''
         self.SECRETID, self.SECRETKEY, self.timeout = SECRETID, SECRETKEY, timeout
         self.driver = driver
 
-    def _solve_p(self, url:str):
+    def _solve_p(self, url: str):
         msg_url = url
         result1 = upload(msg_url, self.SECRETID, self.SECRETKEY)  # 上传链接返回结果
         return result1
 
 
-def upload(msg_url:str, SECRETID:str, SECRETKEY:str):
+def upload(msg_url: str, SECRETID: str, SECRETKEY: str):
     '''上传音频链接msg_url'''
     try:
         cred = credential.Credential(SECRETID, SECRETKEY)
@@ -141,7 +146,7 @@ def upload(msg_url:str, SECRETID:str, SECRETKEY:str):
         return False
 
 
-def get_result(id_d:str, SECRETID:str, SECRETKEY:str) -> str:
+def get_result(id_d: str, SECRETID: str, SECRETKEY: str) -> str:
     try:
         cred = credential.Credential(SECRETID, SECRETKEY)
         httpProfile = HttpProfile()

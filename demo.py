@@ -18,8 +18,8 @@ PASSWORD = os.environ.get("PASSWORD", "PASSWORD")
 DRIVER = os.environ.get("DRIVER", "/usr/bin/chromedriver")
 UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
-HEADLESS = os.environ.get("HEADLESS", "False")
-headless = True if HEADLESS.lower() == "true" else False
+INTERVENE = os.environ.get("INTERVENE", "False")
+intervene = True if INTERVENE.lower() == "true" else False
 # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=logging.INFO,
                     format='%(name)s-[%(levelname)s] %(asctime)s - %(message)s')
@@ -132,7 +132,7 @@ async def renew(page: Page, context: BrowserContext) -> None:
 async def main() -> None:
     async with async_playwright() as playwright:
         # 初始化 browser 及其 上下文
-        browser = await playwright.chromium.launch(headless=headless)
+        browser = await playwright.chromium.launch(headless=False)
         context = await browser.new_context(
             user_agent=UA,
             viewport={"width": 1920, "height": 1080},
@@ -181,7 +181,7 @@ async def reSolve(page: Page, iframePath="") -> str:
         await page.frame_locator("//html/body/div[10]/div[4]/iframe").locator("#recaptcha-audio-button").focus()
         await page.keyboard.press("Enter")
     except:
-        return await errhand(page, headless)
+        return await errhand(page, intervene)
     # await page.frame_locator("//html/body/div[10]/div[4]/iframe").locator("#recaptcha-audio-button").click()
     logging.info("audio-button clicked")
 
@@ -200,7 +200,7 @@ async def reSolve(page: Page, iframePath="") -> str:
     logging.info("audio_url got success")
 
     if audio_url == 'https://developers.google.com/recaptcha/docs/faq#my-computer-or-network-may-be-sending-automated-queries':
-        return await errhand(page, headless)
+        return await errhand(page, intervene)
     result = reSolver._solve_p(audio_url)
 
     if not result:
@@ -222,10 +222,10 @@ async def reSolve(page: Page, iframePath="") -> str:
     return result
 
 
-async def errhand(page, headless=True):
-    if not headless:
-        logging.warning("please hand login")
-    while ((not headless) and (await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute("aria-checked") == 'false')):
+async def errhand(page, intervene=False):
+    if intervene:
+        logging.warning("please fix captha by hand")
+    while (intervene and (await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute("aria-checked") == 'false')):
         continue
     return await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute("aria-checked")
 
