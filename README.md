@@ -23,6 +23,10 @@
 - [CoiaPrant/Hax_extend: Hax免费VPS自动续期 (github.com)](https://github.com/CoiaPrant/Hax_extend)
 - [King-stark/Hax_extend (github.com)](https://github.com/King-stark/Hax_extend)
 
+## Description
+
+**特此声明**：项目用于学习交流，仅用于个人使用，请勿滥用！
+
 ## 开始使用
 
 ### ASR api key 获取
@@ -62,17 +66,17 @@
    
 2. **完善变量**
 
-   | 环境变量           | 含义                                    |
-   | ------------------ | --------------------------------------- |
-   | TRUECAPTCHA_USERID | TrueCaptcha 的 userid-str               |
-   | TRUECAPTCHA_APIKEY | TrueCaptcha 的 apikey-str               |
-   | SECRETID           | 腾讯云 SECRETID-str                     |
-   | SECRETKEY          | 腾讯云 SECRETKEY-str                    |
-   | USRNAME            | hax 登陆时填写的用户名-str              |
-   | PASSWORD           | hax 登陆时填写的密码-str                |
-   | DRIVER             | [弃用] selenium chromedriver 路径-str   |
-   | UA                 | 浏览器使用的 UA-str                     |
-   | INTERVENE          | 人为干预浏览器时启用 - str: True\|False |
+   | 环境变量           | 含义                                      |
+   | ------------------ | ----------------------------------------- |
+   | TRUECAPTCHA_USERID | TrueCaptcha 的 userid -str                |
+   | TRUECAPTCHA_APIKEY | TrueCaptcha 的 apikey -str                |
+   | SECRETID           | 腾讯云 SECRETID -str                      |
+   | SECRETKEY          | 腾讯云 SECRETKEY -str                     |
+   | USRNAME            | hax 登陆时填写的用户名 -str               |
+   | PASSWORD           | hax 登陆时填写的密码 -str                 |
+   | DRIVER             | [弃用] selenium 用 chromedriver 路径 -str |
+   | UA                 | 浏览器使用的 UA, 缺省使用随机值           |
+   | INTERVENE          | 人为干预浏览器时启用 - str: True\|False   |
    
    这些值未定义时将使用 demo.py 内预设定的值, 因此也可直接修改 demo.py 文件内相应字段
    
