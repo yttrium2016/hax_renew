@@ -7,16 +7,18 @@ from simpleCaptchaSolver import reCapthaSolver, simpleSolver
 import json
 
 
-TRUECAPTCHA_USERID = os.environ.get("TRUECAPTCHA_USERID", "TRUECAPTCHA_USERID")
+TRUECAPTCHA_USERID = os.environ.get("TRUECAPTCHA_USERID", "USERID")
 TRUECAPTCHA_APIKEY = os.environ.get(
-    "TRUECAPTCHA_APIKEY", "TRUECAPTCHA_APIKEY")
+    "TRUECAPTCHA_APIKEY", "APIKEY")
 SECRETID = os.environ.get("SECRETID", "SECRETID")
 SECRETKEY = os.environ.get("SECRETKEY", "SECRETKEY")
-USRNAME = os.environ.get("USRNAME", "USRNAME")
+USRNAME = os.environ.get("USRNAME", "USERNAME")
 PASSWORD = os.environ.get("PASSWORD", "PASSWORD")
 DRIVER = os.environ.get("DRIVER", "/usr/bin/chromedriver")
 UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
+HEADLESS = os.environ.get("HEADLESS", "False")
+headless = True if HEADLESS.lower() == "true" else False
 
 async def saveCookies(context):
 # 保存状态
@@ -107,7 +109,7 @@ async def renew(page: Page) -> None:
 async def main() -> None:
     async with async_playwright() as playwright:
         # 初始化 browser 及其 上下文
-        browser = await playwright.chromium.launch(headless=True,timeout=300000)
+        browser = await playwright.chromium.launch(headless=headless,timeout=300000)
         context = await browser.new_context(
             user_agent=UA,
             viewport={"width":1920,"height":1080},
