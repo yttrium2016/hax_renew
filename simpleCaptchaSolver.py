@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 import re
 import requests
 import time
@@ -8,7 +9,7 @@ from tencentcloud.common.profile.client_profile import ClientProfile
 from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.asr.v20190614 import asr_client, models
-
+logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 class simpleSolver():
     '''解析简单的图片验证码'''
@@ -40,13 +41,13 @@ class simpleSolver():
         if "result" in solved:
             solved_text = solved["result"]
             if "RESULT  IS" in solved_text:
-                print("[Captcha Solver] You are using the demo apikey.")
-                print("There is no guarantee that demo apikey will work in the future!")
+                logging.warning("[Captcha Solver] You are using the demo apikey.")
+                logging.warning("There is no guarantee that demo apikey will work in the future!")
                 # because using demo apikey
                 text = re.findall(r"RESULT  IS . (.*) .", solved_text)[0]
             else:
                 # using your own apikey
-                print("[Captcha Solver] You are using your own apikey.")
+                logging.info("[Captcha Solver] You are using your own apikey.")
                 text = solved_text
             operators = ["X", "x", "+", "-"]
             if any(x in text for x in operators):
@@ -70,7 +71,7 @@ class simpleSolver():
             else:
                 return text
         else:
-            print(solved)
+            logging.info(solved)
             raise KeyError("Failed to find parsed results.")
 
     def get_captcha_solver_usage(self) -> dict:
@@ -133,10 +134,10 @@ def upload(msg_url:str, SECRETID:str, SECRETKEY:str):
             count += 1
             if count > 120:
                 return False
-        print(st)
+        logging.info(st)
         return st
     except TencentCloudSDKException as err:
-        print(err)
+        logging.error(err)
         return False
 
 
@@ -169,5 +170,5 @@ def get_result(id_d:str, SECRETID:str, SECRETKEY:str) -> str:
         return json.loads(resp.to_json_string())["Data"]["Result"].split("]")[-1][2:-1]
 
     except TencentCloudSDKException as err:
-        print(err)
+        logging.error(err)
         return False

@@ -1,3 +1,4 @@
 README.assets/
 state.json
 captcha.png
+__pycache__/
