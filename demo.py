@@ -225,6 +225,7 @@ async def errhand(page,headless=True):
 
 async def simpleSolve(page: Page, iframePath="") -> str:
     simple_Solver = simpleSolver(TRUECAPTCHA_USERID, TRUECAPTCHA_APIKEY)
+    await page.locator("img[id=\"captcha\"]").focus()
     await page.locator("img[id=\"captcha\"]").screenshot(path="captcha.png")
     result: dict = simple_Solver.solve("captcha.png")
     # Fill input[name="captcha"]

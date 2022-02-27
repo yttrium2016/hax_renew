@@ -28,7 +28,7 @@ jobs:
     - name: Playwright && fake desktop install
       run: |
         python -m playwright install
-        sudo apt install xvfb
+        # sudo apt install xvfb
 
     - name: main run
       run: |
