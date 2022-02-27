@@ -17,7 +17,7 @@ PASSWORD = os.environ.get("PASSWORD", "PASSWORD")
 DRIVER = os.environ.get("DRIVER", "/usr/bin/chromedriver")
 UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
-HEADLESS = os.environ.get("HEADLESS", "False")
+HEADLESS = os.environ.get("HEADLESS", "True")
 headless = True if HEADLESS.lower() == "true" else False
 
 async def saveCookies(context):
@@ -124,7 +124,7 @@ async def main() -> None:
         # Open new page
         page = await context.new_page()
         page.add_init_script(js)  # 注入 js
-        page.set_default_timeout(300000)
+        # page.set_default_timeout(300000)
         await stealth_async(page, pure=False)  # 进一步特征隐藏
 
         # await page.content() # 等待页面 不知道作用如何
