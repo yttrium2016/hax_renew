@@ -48,7 +48,7 @@ async def login(page: Page) -> None:
         logging.info(f"cf passed success")
     else: 
         logging.error(f"cf passed {res}")
-        logging.error(await page.inner_html())
+        logging.error(await page.content())
         logging.error("JUMP OUT")
         return
 
@@ -74,7 +74,7 @@ async def login(page: Page) -> None:
         except:
             result = page.url
             logging.warn("login status not found")
-            logging.error(await page.inner_html())
+            logging.error(await page.content())
     logging.info(result)
     # await page.wait_for_timeout(65535)
 
@@ -87,7 +87,7 @@ async def renew(page: Page) -> None:
         logging.info(f"cf passed success")
     else: 
         logging.error(f"cf passed {res}")
-        logging.error(await page.inner_html())
+        logging.error(await page.content())
         logging.error("JUMP OUT")
         return
 
@@ -157,7 +157,7 @@ async def main() -> None:
 async def reSolve(page: Page, iframePath="") -> str:
     reSolver = reCapthaSolver(SECRETID, SECRETKEY, 0)
     auto_passed = await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute('aria-checked')
-    logging.info(auto_passed)
+    logging.info(f"is auto_passed: {auto_passed}")
     if auto_passed == "true":
         return auto_passed
 
