@@ -48,7 +48,7 @@ async def login(page: Page) -> None:
         logging.info(f"cf passed success")
     else: 
         logging.error(f"cf passed {res}")
-        print(page.inner_html)
+        logging.error(await page.inner_html())
         logging.error("JUMP OUT")
         return
 
@@ -74,7 +74,7 @@ async def login(page: Page) -> None:
         except:
             result = page.url
             logging.warn("login status not found")
-            print(page.inner_html)
+            logging.error(await page.inner_html())
     logging.info(result)
     # await page.wait_for_timeout(65535)
 
@@ -87,7 +87,7 @@ async def renew(page: Page) -> None:
         logging.info(f"cf passed success")
     else: 
         logging.error(f"cf passed {res}")
-        print(page.inner_html)
+        logging.error(await page.inner_html())
         logging.error("JUMP OUT")
         return
 

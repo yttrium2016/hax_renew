@@ -9,7 +9,7 @@ from tencentcloud.common.profile.client_profile import ClientProfile
 from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.asr.v20190614 import asr_client, models
-logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level = logging.INFO,format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s') # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
 
 class simpleSolver():
     '''解析简单的图片验证码'''
