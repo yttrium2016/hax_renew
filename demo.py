@@ -4,7 +4,7 @@ import logging
 import os
 import random
 from cf_clearance import async_cf_retry, stealth_async
-from playwright.async_api import Playwright, async_playwright, Page
+from playwright.async_api import Playwright, async_playwright, Page, BrowserContext
 from simpleCaptchaSolver import reCapthaSolver, simpleSolver
 
 
@@ -20,22 +20,27 @@ UA = os.environ.get(
     "UA", f"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(89,100)}.{random.randint(0,9)}.{random.randint(1000,9999)}.{random.randint(100,999)} Safari/537.36")
 HEADLESS = os.environ.get("HEADLESS", "False")
 headless = True if HEADLESS.lower() == "true" else False
-logging.basicConfig(level = logging.INFO,format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s') # format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
+# format = '%(name)s-[%(levelname)s] %(asctime)s - %(message)s'
+logging.basicConfig(level=logging.INFO,
+                    format='%(name)s-[%(levelname)s] %(asctime)s - %(message)s')
+
 
 async def saveCookies(context):
-# 保存状态
+    # 保存状态
     storage = await context.storage_state()
     with open("state.json", "w") as f:
         f.write(json.dumps(storage))
- 
+
+
 async def loadCookies():
     # 加载状态
     try:
-        with open("state.json","r") as f:
+        with open("state.json", "r") as f:
             storage_state = json.loads(f.read())
     except:
         storage_state = {}
     return storage_state
+
 
 async def login(page: Page) -> None:
     await page.goto('https://hax.co.id/vps-info')  # 默认也为 30s 内加载界面
@@ -46,12 +51,11 @@ async def login(page: Page) -> None:
     res = await async_cf_retry(page)  # 过 cloudflare waf
     if res == True:
         logging.info(f"cf passed success")
-    else: 
+    else:
         logging.error(f"cf passed {res}")
         logging.error(await page.content())
         logging.error("JUMP OUT")
         return
-
 
     # Fill [name="username"] [placeholder="Password"]
     await page.locator("[name=\"username\"]").fill(USRNAME)
@@ -80,14 +84,14 @@ async def login(page: Page) -> None:
     # await page.wait_for_timeout(65535)
 
 
-async def renew(page: Page) -> None:
+async def renew(page: Page, context: BrowserContext) -> None:
     # Go to https://hax.co.id/vps-renew
     await page.goto("https://hax.co.id/vps-renew")
     await page.wait_for_timeout(random.randint(700, 1600))
     res = await async_cf_retry(page)  # 过 cloudflare waf
     if res == True:
         logging.info(f"cf passed success")
-    else: 
+    else:
         logging.error(f"cf passed {res}")
         logging.error(await page.content())
         logging.error("JUMP OUT")
@@ -106,7 +110,7 @@ async def renew(page: Page) -> None:
     # await page.locator("input[name=\"agreement\"]").check()
     logging.info("agreement checked")
 
-    await simpleSolve(page)
+    await simpleSolve(page, context)
     # Click span[role="checkbox"]
     await reSolve(page)
 
@@ -131,7 +135,7 @@ async def main() -> None:
         browser = await playwright.chromium.launch(headless=headless)
         context = await browser.new_context(
             user_agent=UA,
-            viewport={"width":1920,"height":1080},
+            viewport={"width": 1920, "height": 1080},
             storage_state=await loadCookies(),
         )
 
@@ -150,7 +154,7 @@ async def main() -> None:
 
         await login(page)
         await saveCookies(context)
-        await renew(page)
+        await renew(page, context)
 
         # ---------------------
         await context.close()
@@ -177,7 +181,7 @@ async def reSolve(page: Page, iframePath="") -> str:
         await page.frame_locator("//html/body/div[10]/div[4]/iframe").locator("#recaptcha-audio-button").focus()
         await page.keyboard.press("Enter")
     except:
-        return await errhand(page,headless)
+        return await errhand(page, headless)
     # await page.frame_locator("//html/body/div[10]/div[4]/iframe").locator("#recaptcha-audio-button").click()
     logging.info("audio-button clicked")
 
@@ -196,7 +200,7 @@ async def reSolve(page: Page, iframePath="") -> str:
     logging.info("audio_url got success")
 
     if audio_url == 'https://developers.google.com/recaptcha/docs/faq#my-computer-or-network-may-be-sending-automated-queries':
-        return await errhand(page,headless)
+        return await errhand(page, headless)
     result = reSolver._solve_p(audio_url)
 
     if not result:
@@ -217,16 +221,20 @@ async def reSolve(page: Page, iframePath="") -> str:
     logging.info("verify-button clicked")
     return result
 
-async def errhand(page,headless=True):
-    if not headless : logging.warning("please hand login")
+
+async def errhand(page, headless=True):
+    if not headless:
+        logging.warning("please hand login")
     while ((not headless) and (await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute("aria-checked") == 'false')):
-            continue
+        continue
     return await page.frame_locator("iframe[role=\"presentation\"]").locator("//*[@id=\"recaptcha-anchor\"]").get_attribute("aria-checked")
 
-async def simpleSolve(page: Page, iframePath="") -> str:
+
+async def simpleSolve(page: Page, context: BrowserContext, iframePath="") -> str:
     simple_Solver = simpleSolver(TRUECAPTCHA_USERID, TRUECAPTCHA_APIKEY)
-    await page.locator("img[id=\"captcha\"]").focus()
-    await page.locator("img[id=\"captcha\"]").screenshot(path="captcha.png")
+    page1 = await context.new_page()
+    await page1.goto("https://hax.co.id/captcha")
+    await page1.locator("img").screenshot(path="captcha.png")
     result: dict = simple_Solver.solve("captcha.png")
     # Fill input[name="captcha"]
     logging.info(f"the num_code is {result}")
