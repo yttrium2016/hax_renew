@@ -43,14 +43,14 @@ async def login(page: Page) -> None:
     if page.url == 'https://hax.co.id/vps-info':
         logging.info(f"it seems that you has logined in {page.url}")
         return
-    res = await async_cf_retry(page)  # 过 cloudflare waf
-    if res == True:
-        logging.info(f"cf passed success")
-    else: 
-        logging.error(f"cf passed {res}")
-        logging.error(await page.content())
-        logging.error("JUMP OUT")
-        return
+    # res = await async_cf_retry(page)  # 过 cloudflare waf
+    # if res == True:
+    #     logging.info(f"cf passed success")
+    # else: 
+    #     logging.error(f"cf passed {res}")
+    #     logging.error(await page.content())
+    #     logging.error("JUMP OUT")
+    #     return
 
 
     # Fill [name="username"] [placeholder="Password"]
@@ -74,7 +74,7 @@ async def login(page: Page) -> None:
         except:
             result = page.url
             logging.warn("login status not found")
-            logging.error(await page.content())
+            logging.warn(await page.content())
     logging.info(result)
     # await page.wait_for_timeout(65535)
 
