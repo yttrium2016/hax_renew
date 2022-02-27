@@ -30,3 +30,10 @@ jobs:
     - name: main run
       run: |
         python demo.py
+      env:
+        TRUECAPTCHA_USERID: ${{ secrets.TRUECAPTCHA_USERID }}
+        TRUECAPTCHA_APIKEY: ${{ secrets.TRUECAPTCHA_APIKEY }}
+        SECRETID: ${{ secrets.SECRETID }}
+        SECRETKEY: ${{ secrets.SECRETKEY }}
+        USRNAME: ${{ secrets.USRNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
