@@ -81,7 +81,8 @@ async def login(page: Page) -> None:
 
 async def renew(page: Page) -> None:
     # Go to https://hax.co.id/vps-renew
-    await page.goto("https://hax.co.id/vps-renew",timeout=100000)
+    await page.goto("https://hax.co.id/vps-renew")
+    await page.wait_for_timeout(random.randint(700, 1600))
     res = await async_cf_retry(page)  # 过 cloudflare waf
     if res == True:
         logging.info(f"cf passed success")
