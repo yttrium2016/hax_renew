@@ -72,6 +72,7 @@ async def login(page: Page) -> None:
         try:
             result = await page.locator("//html/body/main/div/div/div[2]/div/div/div/div/div/div").inner_text()
         except:
+            await async_cf_retry(page)
             result = page.url
             logging.warn("login status not found")
             logging.warn(await page.content())
@@ -114,6 +115,7 @@ async def renew(page: Page) -> None:
     await page.locator("[name=\"submit_button\"]").focus()
     await page.keyboard.press("Enter")
 
+    await async_cf_retry(page)
     result = await page.locator("[id=\"response\"]").inner_text()
     while result == "Loading.....":
         try:
