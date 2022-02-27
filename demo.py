@@ -96,7 +96,7 @@ async def renew(page: Page) -> None:
     # Click [input[name=\"web_address\"]]
     web_address = page.locator("input[name=\"web_address\"]")
     # Fill [input[name=\"web_address\"]]
-    logging.info("web_address placeholder: ",await web_address.get_attribute('placeholder'))
+    logging.info(f"web_address placeholder: {await web_address.get_attribute('placeholder')}")
     await web_address.fill(await web_address.get_attribute('placeholder'))
     logging.info("web_address filled")
 
