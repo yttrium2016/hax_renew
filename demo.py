@@ -236,7 +236,7 @@ async def simpleSolve(page: Page, context: BrowserContext, iframePath="") -> str
     page1 = await context.new_page()
     await page1.goto("https://hax.co.id/captcha")
     await page1.locator("img").screenshot(path="cache/captcha.png")
-    result: dict = simple_Solver.solve("captcha.png")
+    result: dict = simple_Solver.solve("cache/captcha.png")
     # Fill input[name="captcha"]
     logging.info(f"the num_code is {result}")
     await page.locator("input[name=\"captcha\"]").fill(result.get('result'))
