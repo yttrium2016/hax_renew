@@ -35,7 +35,7 @@ async def saveCookies(context):
 async def loadCookies():
     # 加载状态
     try:
-        with open("state.json", "r") as f:
+        with open("cache/state.json", "r") as f:
             storage_state = json.loads(f.read())
     except:
         logging.warning("cookies init")
