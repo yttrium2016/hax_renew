@@ -44,7 +44,7 @@ async def loadCookies():
 
 async def login(page: Page) -> None:
     await page.goto('https://hax.co.id/vps-info')  # 默认也为 30s 内加载界面
-    await page.wait_for_timeout(random.randint(700, 1600))
+    await page.content()
     if page.url == 'https://hax.co.id/vps-info':
         logging.info(f"it seems that you has logined in {page.url}")
         return
