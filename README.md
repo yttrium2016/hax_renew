@@ -103,7 +103,7 @@ captcha.png 为处理 数字验证码的中间文件, state.json 储存了 cooki
 ## TODO
 
 - [ ] pushdeer 通知
-- [ ] 尝试在 GitHub Action 中保存 cookies 状态
+- [x] 尝试在 GitHub Action 中保存 cookies 状态
 - [ ] 寻找更好的方法处理临时图片
 - [ ] 逻辑, 错误处理优化
 - [ ] 日志组件
