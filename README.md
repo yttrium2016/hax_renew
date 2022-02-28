@@ -63,7 +63,6 @@
    ```
 
    其中 `playwright install`时会下载多个浏览器内核, 比较依赖网络
-   
 2. **完善变量**
 
    | 环境变量           | 含义                                      |
@@ -77,11 +76,10 @@
    | DRIVER             | [弃用] selenium 用 chromedriver 路径 -str |
    | UA                 | 浏览器使用的 UA, 缺省使用随机值           |
    | INTERVENE          | 人为干预浏览器时启用 - str: True\|False   |
-   
+
    这些值未定义时将使用 demo.py 内预设定的值, 因此也可直接修改 demo.py 文件内相应字段
-   
+
    *当 INTERVENE 启用时, 错误处理中 errhand 函数会阻塞, 直到人为完成验证码*
-   
 3. **脚本运行**
 
    默认运行在有头模式, 有需要可自行修改
@@ -98,7 +96,7 @@ coming soon
 
 ## 运行生成文件说明
 
-脚本运行需要当前目录的写权限, 会创建 captcha.png 与 state.json 两个文件
+脚本运行需要 cache 目录的写权限, 会在 cache 目录创建 captcha.png 与 state.json 两个文件
 
 captcha.png 为处理 数字验证码的中间文件, state.json 储存了 cookies, 避免重复登录
 
