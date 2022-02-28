@@ -53,5 +53,4 @@ jobs:
         USRNAME: ${{ secrets.USRNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
         HEADLESS: ${{ secrets.INTERVENE }}
-      with:
-        path: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}
