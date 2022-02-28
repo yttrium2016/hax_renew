@@ -55,7 +55,7 @@ async def login(page: Page) -> None:
         return
     await page.content()
     if page.url != 'https://hax.co.id/login':
-        logging.info(f"it seems that you has logined in {page.url}")
+        logging.info(f"it seems that you have logined in {page.url}")
         return
 
     # Fill [name="username"] [placeholder="Password"]
