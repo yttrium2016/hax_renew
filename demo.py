@@ -44,10 +44,6 @@ async def loadCookies():
 
 async def login(page: Page) -> None:
     await page.goto('https://hax.co.id/vps-info')  # 默认也为 30s 内加载界面
-    await page.content()
-    if page.url == 'https://hax.co.id/vps-info':
-        logging.info(f"it seems that you has logined in {page.url}")
-        return
     res = await async_cf_retry(page)  # 过 cloudflare waf
     if res == True:
         logging.info(f"cf passed success")
@@ -55,6 +51,10 @@ async def login(page: Page) -> None:
         logging.error(f"cf passed {res}")
         logging.error(await page.content())
         logging.error("JUMP OUT")
+        return
+    await page.content()
+    if page.url == 'https://hax.co.id/vps-info':
+        logging.info(f"it seems that you has logined in {page.url}")
         return
 
     # Fill [name="username"] [placeholder="Password"]
