@@ -53,7 +53,7 @@ async def login(page: Page) -> None:
         logging.error("JUMP OUT")
         return
     await page.content()
-    if page.url == 'https://hax.co.id/vps-info':
+    if page.url != 'https://hax.co.id/login':
         logging.info(f"it seems that you has logined in {page.url}")
         return
 
