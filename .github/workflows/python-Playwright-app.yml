@@ -37,7 +37,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ./cache
+          ${{ github.workspace }}/cache
           # !~/cache/exclude
         key: 
           ${{ secrets.keyForCache }}
@@ -53,3 +53,5 @@ jobs:
         USRNAME: ${{ secrets.USRNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
         HEADLESS: ${{ secrets.INTERVENE }}
+      path:
+        ${{ github.workspace }}
