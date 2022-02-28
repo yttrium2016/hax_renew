@@ -28,7 +28,7 @@ logging.basicConfig(level=logging.INFO,
 async def saveCookies(context):
     # 保存状态
     storage = await context.storage_state()
-    with open("state.json", "w") as f:
+    with open("cache/state.json", "w") as f:
         f.write(json.dumps(storage))
 
 
@@ -235,7 +235,7 @@ async def simpleSolve(page: Page, context: BrowserContext, iframePath="") -> str
     simple_Solver = simpleSolver(TRUECAPTCHA_USERID, TRUECAPTCHA_APIKEY)
     page1 = await context.new_page()
     await page1.goto("https://hax.co.id/captcha")
-    await page1.locator("img").screenshot(path="captcha.png")
+    await page1.locator("img").screenshot(path="cache/captcha.png")
     result: dict = simple_Solver.solve("captcha.png")
     # Fill input[name="captcha"]
     logging.info(f"the num_code is {result}")
