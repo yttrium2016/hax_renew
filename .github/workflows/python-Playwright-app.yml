@@ -33,6 +33,15 @@ jobs:
         python -m playwright install
         # sudo apt install xvfb
 
+    - name: Cache for cookies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ./cache
+          # !~/cache/exclude
+        key: 
+          ${{ secrets.keyForCache }}
+
     - name: main run
       run: |
         xvfb-run python3 demo.py
@@ -43,4 +52,4 @@ jobs:
         SECRETKEY: ${{ secrets.SECRETKEY }}
         USRNAME: ${{ secrets.USRNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        HEADLESS: ${{ secrets.HEADLESS }}
+        HEADLESS: ${{ secrets.INTERVENE }}
