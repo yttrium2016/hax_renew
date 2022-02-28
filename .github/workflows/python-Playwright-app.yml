@@ -40,7 +40,7 @@ jobs:
           ./cache
           # !~/cache/exclude
         key: 
-          ${{ secrets.keyForCache }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('**/lockfiles') }}
+          ${{ secrets.keyForCache }}
 
     - name: main run
       run: |

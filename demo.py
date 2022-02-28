@@ -38,6 +38,7 @@ async def loadCookies():
         with open("state.json", "r") as f:
             storage_state = json.loads(f.read())
     except:
+        logging.warning("cookies init")
         storage_state = {}
     return storage_state
 
