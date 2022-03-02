@@ -4,7 +4,9 @@
 - 前涉嫌Abuse行为的GitHub仓库已经交由Hax EN团队处理
 - 建议涉及用户及相关Fork者尽快停止公开仓库
 - 续期仓库使用相关技术栈作者已声明不支持该行为
+
 ——————————
+
 Brief description of the incident
 - The Hax CN team accidentally discovered that some users have privately open sourced the Hax automatic renewal program
 - involving GitHub users S**-H, c*****8, h****o
