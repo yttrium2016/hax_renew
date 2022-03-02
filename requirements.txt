@@ -1,4 +1,0 @@
-cf_clearance==0.0.5
-playwright==1.19.1
-requests==2.27.1
-tencentcloud_sdk_python==3.0.583
